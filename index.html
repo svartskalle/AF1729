@@ -673,7 +673,7 @@
             });
             
             // Reset state
-            nextButton.textContent = 'Next Question';
+            nextButton.textContent = 'Nästa';
             feedbackElement.style.display = 'none';
             selectedOptionIndex = -1;
             answeredCurrentQuestion = false;
@@ -701,13 +701,13 @@
             // Check answer
             if (originalIndex === question.correct) {
                 options[displayIndex].classList.add('correct');
-                feedbackElement.textContent = 'Correct!';
+                feedbackElement.textContent = 'Rätt!';
                 feedbackElement.className = 'feedback correct';
                 score++;
             } else {
                 options[displayIndex].classList.add('incorrect');
                 options[correctDisplayIndex].classList.add('correct');
-                feedbackElement.textContent = 'Incorrect. The correct answer is: ' + question.options[question.correct];
+                feedbackElement.textContent = 'Fel. Rätt svar är: ' + question.options[question.correct];
                 feedbackElement.className = 'feedback incorrect';
             }
             
