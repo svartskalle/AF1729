@@ -67,11 +67,11 @@
             background-color: #3a9c96;
         }
         
-        #welcome-screen, #quiz-screen, #results-screen, #editor-screen {
+        #welcome-screen, #quiz-screen, #results-screen, #editor-screen, #quiz-selection-screen {
             display: none;
         }
         
-        #welcome-screen.active, #quiz-screen.active, #results-screen.active, #editor-screen.active {
+        #welcome-screen.active, #quiz-screen.active, #results-screen.active, #editor-screen.active, #quiz-selection-screen.active {
             display: block;
         }
         
@@ -245,6 +245,49 @@
         input:checked + .slider:before {
             transform: translateX(26px);
         }
+        
+        .quiz-list {
+            margin: 20px 0;
+        }
+        
+        .quiz-item {
+            background-color: white;
+            border: 2px solid var(--primary-color);
+            border-radius: 4px;
+            padding: 15px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .quiz-item:hover {
+            background-color: #e6f0fa;
+        }
+        
+        .quiz-title {
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .quiz-info {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .quiz-actions {
+            display: flex;
+        }
+        
+        .quiz-name-input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
@@ -269,14 +312,28 @@
         </div>
         
         <div class="controls">
-            <button id="start-sample-btn" class="btn">Starta</button>
+            <button id="select-quiz-btn" class="btn">Välj Quiz</button>
             <button id="create-quiz-btn" class="btn btn-accent">Lägg till frågor</button>
+        </div>
+    </div>
+    
+    <div id="quiz-selection-screen" class="container">
+        <h2>Välj Quiz</h2>
+        
+        <div id="quiz-list" class="quiz-list">
+            <!-- Quiz items will be added here dynamically -->
+        </div>
+        
+        <div class="controls">
+            <button id="back-from-selection-btn" class="btn">Tillbaka</button>
         </div>
     </div>
     
     <div id="editor-screen" class="container">
         <h2>Lägg till frågor</h2>
-        <p class="hint">skriv era  frågor för quizet här, varje fråga behöver en "question"-text, en array med "options", och indexet för det "correct" svaret (0-baserat).</p>
+        <p class="hint">skriv era frågor för quizet här, varje fråga behöver en "question"-text, en array med "options", och indexet för det "correct" svaret (0-baserat).</p>
+        
+        <input type="text" id="quiz-name-input" class="quiz-name-input" placeholder="Ange ett namn för quizet (t.ex. Quiz 1, Eurokoder, etc.)">
         
         <textarea id="quiz-editor" placeholder='[
   {
@@ -310,7 +367,7 @@
         </div>
         
         <div class="controls">
-            <button id="save-quiz-btn" class="btn btn-accent">Spara & Starta Quiz</button>
+            <button id="save-quiz-btn" class="btn btn-accent">Spara Quiz</button>
             <button id="back-from-editor-btn" class="btn">Tillbaka</button>
         </div>
     </div>
@@ -320,6 +377,7 @@
             <div id="progress-bar" class="progress-bar"></div>
         </div>
         
+        <h2 id="current-quiz-title">Quiz</h2>
         <h2 id="question-text">Frågor läggs här</h2>
         
         <div id="options-container" class="options-container">
@@ -343,12 +401,15 @@
         
         <div class="controls">
             <button id="restart-btn" class="btn">Starta om Quiz</button>
+            <button id="select-another-btn" class="btn">Välj ett annat Quiz</button>
             <button id="home-btn" class="btn btn-accent">Tillbaka hem</button>
         </div>
     </div>
     
     <script>
         // Quiz state
+        let quizzes = []; // Array to store all quizzes
+        let currentQuizIndex = -1; // Index of the current quiz in the quizzes array
         let currentQuestions = [];
         let currentQuestionIndex = 0;
         let score = 0;
@@ -359,151 +420,513 @@
         let currentOptionsMapping = [];
         
         // Sample quiz data
-        const sampleQuizData = [
-    {
-                question: "Vilket dokument innehåller Trafikverkets nationella val för valbara parametrar i Eurokoder i Sverige? (1p)",
-                options: ["EKS 10", "Krav Brobyggande", "Råd Brobyggande", "TSFS (tidigare TRVFS)"],
-                correct: 3
-            },
-            {
-                question: "Vilken handling innehåller Trafikverkets krav för dimensionering av broar? (1p)",
-                options: ["Krav Brobyggande", "Råd Brobyggande", "EKS 10", "TK Geo"],
-                correct: 0
-            },
-            {
-                question: "Vilket tillstånd råder i stadium II för armerat betongtvärsnitt? (1p)",
-                options: ["Osprucket", "Sprucket", "Krossad betong i tryckt betong", "Plastisering i dragen armeringsjärn"],
-                correct: 1
-            },
-            {
-                question: "Ange vilket gränstillstånd inkluderar stadium I och II? (1p)",
-                options: ["Bruksgränstillstånd", "Brottgränstillstånd", "Utmattningstillstånd", "Ingen av ovanstående alternativ"],
-                correct: 0
-            },
-            {
-                question: "Ange vilket gränstillstånd inkluderar stadium III? (1p)",
-                options: ["Bruksgränstillstånd", "Brottgränstillstånd", "Utmattningstillstånd", "Ingen av ovanstående alternativ"],
-                correct: 1
-            },
-            {
-                question: "Välj kriteriet som inte styr valet av täckande betongskikt? (1p)",
-                options: ["Utmattning", "Beständighet (exponeringsklass)", "Förankring (kraftöverföring)", "Ingen av ovanstående alternativ"],
-                correct: 0
-            },
-            {
-                question: "Frekvent lastkombination används för? (1p)",
-                options: [
-                    "Armering i Brottgränstillstånd (exponeringsklass)",
-                    "Kontroll av uppsprickning",
-                    "Armering m.h.t. krav på sprickvidd",
-                    "Ingen av ovanstående alternativ"
-                ],
-                correct: 1
-            },
-            {
-                question: "Kvasi-permanent lastkombination används för? (1p)",
-                options: [
-                    "Utmattning",
-                    "Armering i Brottgränstillstånd (exponeringsklass)",
-                    "Kontroll av uppsprickning",
-                    "Armering m.h.t. krav på sprickvidd"
-                ],
-                correct: 3
-            },
-            {
-                question: "Vid beräkning av grundläggnings stabilitet för bottenplatta för packad fyllning kontrolleras om konstruktionen glider (villkor för glidning). Vilka av följande krafter är drivande kraft för glidning?",
-                options: ["Horisontell kraft (H)", "Vertikal kraft (V)", "Friktionskraft mellan bottenplatta och fyllning", "Friktionskraft mellan ballasten i fyllningen"],
-                correct: 0
-            },
-            {
-                question: "Vilken uppsättning av lastkoefficienter enligt Eurokoder används för kontroll av grundläggningsstabilitet för stödmur på packad fyllning?",
-                options: ["Uppsättning A", "Uppsättning B", "Uppsättning C", "Ingen av ovanstående alternativ"],
-                correct: 0
-            },
-            {
-                question: "Vad skall väljas som minsta säkerhetsfaktor S vid kontroll av de tre kriterierna för grundläggningens stabilitet (Jämvikt) enligt ovan?",
-                options: ["1", "1,5", "1,8", "2"],
-                correct: 1
-            },
-            {
-                question: "Vid kontroll av grundläggningens stabilitet skall ett antal lastfall studeras. Välj vilket lastfall som ger alltid lägsta säkerhetsfaktor S för kontroll av risk för glidning?",
-                options: ["Vmin/Hmin", "Vmin/Hmax", "Vmax/Hmax", "Vmax/Hmin"],
-                correct: 1
-            },
-            {
-                question: "Vid kontroll av grundläggningens stabilitet beräknas tillhörande moment av alla karakteristiska laster till en specifik punkt (så kallade punkt A). Var ligger punkt A i stödmurens geometri?",
-                options: ["Underkant av bottenplattans baktass", "Anslutningen mellan mur och bottenplatta", "Underkant av bottenplattans framtass", "Underkant av bottenplattans mittpunkt"],
-                correct: 2
-            },
-            {
-                question: "I fall låg säkerhetsfaktor S erhålls vid de tre kontrollerna av grundläggningens stabilitet, hur man förhöjer säkerhetsfaktorn S genom att ändra på stödmurens geometri?",
-                options: ["Välj en högre mur", "Välj en breddare bottenplatta", "Välj en kortare bottenplatta", "Välj en breddare kantbalk"],
-                correct: 1
-            },
-            {
-                question: "Vid kontroll av grundläggningens stabilitet beräknas de drivande horisontella lasterna av jordtryck och överlast bakom en specifik punkt så kallade 'gardin'. Var placeras gardinen i stödmurens geometri?",
-                options: ["Vid baktassens ände", "Vid murens insida", "Vid mitten av bottenplattans bredd", "Vid framtassens ände"],
-                correct: 0
-            },
-            {
-                question: "Vilken fördelning används för den förenklade modellen av grundpåverkan under bottenplatta?",
-                options: ["Triangulär fördelning", "Rektangulär (konstant) fördelning", "Parabolisk fördelning", "Bilinjär fördelning"],
-                correct: 1
-            },
-            {
-                question: "I vilken uppsättning ingår formler 6.10a och 6.10b?",
-                options: ["Uppsättning C", "Uppsättning A", "Uppsättning B", "Uppsättning D"],
-                correct: 2
-            },
-            {
-                question: "Hur många snitt i bottenplattans baktass är optimalt (minsta nödvändiga) för dimensionering av bottenplatta m.h.t. avkortningen av armering?",
-                options: ["5 snitt", "3 snitt", "2 snitt", "1 snitt"],
-                correct: 1
-            },
-            {
-                question: "Var placeras horisontella laster av jordtryck och överlast vid dimensionering av mur?",
-                options: ["Bakom muren", "Bakom bottenplattans baktass", "3 meter bakom bottenplattans baktass", "1 meter bakom bottenplattans baktass"],
-                correct: 0
-            },
-            {
-                question: "Hur påverkas jordtryckskoefficienten av en lutande mur som lutar mot jordfyllningen?",
-                options: ["Ingen påverkan på koefficienten för jordtryck", "Reduktion av koefficienten för jordtryck", "Förhöjning av koefficienten för jordtryck", "Fördubbling av koefficienten för jordtryck"],
-                correct: 1
-            },
-            {
-                question: "Vad är beteckning för koefficienten för vilojordtryck?",
-                options: ["Ka", "Ko", "Kp", "Ks"],
-                correct: 1
-            },
-            {
-                question: "Vilken jordtryckskoefficient används om stödmuren kan deformeras under verkande jordtryck?",
-                options: ["Vilojordtryck", "Aktivt jordtryck", "Passivt jordtryck", "Ingen av ovanstående alternativ"],
-                correct: 1
-            },
-            {
-                question: "Vilken lastkoefficient används för grundpåverkan vid beräkning av största och minsta snittkraft (dvs V och H och Mill) i ett snitt i bottenplatta?",
-                options: ["1,35", "1,5", "1,0", "1,35*0,89"],
-                correct: 2
-            },
-            {
-                question: "Hur många snitt i mur är optimalt (minsta nödvändiga) för dimensionering av mur m.h.t. avkortningen av armering?",
-                options: ["5 snitt", "3 snitt", "2 snitt", "1 snitt"],
-                correct: 1
-            },
-            {
-                question: "Vilken av de nedanstående laster är variabellast?",
-                options: ["Betongens egentyngd", "Fyllningens egentyngd", "Trafiklast ovanpå stödmurens jordfyllda sida (överlast)", "Beklädnad"],
-                correct: 2
-            }
-        ];
+        const AF1729 = {
+            name: "Quiz 1: AF1729",
+            questions: [
+                {
+                    question: "Vilket dokument innehåller Trafikverkets nationella val för valbara parametrar i Eurokoder i Sverige? (1p)",
+                    options: ["EKS 10", "Krav Brobyggande", "Råd Brobyggande", "TSFS (tidigare TRVFS)"],
+                    correct: 3
+                },
+                {
+                    question: "Vilken handling innehåller Trafikverkets krav för dimensionering av broar? (1p)",
+                    options: ["Krav Brobyggande", "Råd Brobyggande", "EKS 10", "TK Geo"],
+                    correct: 0
+                },
+                {
+                    question: "Vilket tillstånd råder i stadium II för armerat betongtvärsnitt? (1p)",
+                    options: ["Osprucket", "Sprucket", "Krossad betong i tryckt betong", "Plastisering i dragen armeringsjärn"],
+                    correct: 1
+                }
+            ],
+            
+        };
         
+        // New quiz data on Structural Engineering
+        const AF1766_3 = {
+            name: "AF1766 kap 3, variabler",
+            questions: [
+                {
+                    "question": "Hur skapar man en variabel i Python? (1p)",
+                    "options": ["Genom att använda 'var' nyckelordet", "Genom att tilldela ett värde till ett namn", "Genom att använda 'declare' nyckelordet", "Genom att skriva typen före variabelnamnet"],
+                    "correct": 1
+                },
+                {
+                    "question": "Vad händer om du tilldelar ett nytt värde med en annan datatyp till en befintlig variabel? (1p)",
+                    "options": ["Python ger ett fel", "Variabeln byter typ automatiskt", "Python ignorerar ändringen", "Variabeln behåller sin ursprungliga typ"],
+                    "correct": 1
+                },
+                {
+                    "question": "Vilket kommando kan du använda för att ta reda på datatypen för en variabel? (1p)",
+                    "options": ["typeof()", "datatype()", "checktype()", "type()"],
+                    "correct": 3
+                },
+                {
+                    "question": "Vilket av följande är ett giltigt variabelnamn? (1p)",
+                    "options": ["2myvar", "my-var", "_my_var", "my var"],
+                    "correct": 2
+                },
+                {
+                    "question": "Vilket av följande är INTE en giltig metod för att namnge variabler i flera ord? (1p)",
+                    "options": ["CamelCase", "PascalCase", "Snake_Case", "Dash-Case"],
+                    "correct": 3
+                },
+                {
+                    "question": "Vad händer om du försöker kombinera en sträng och ett tal med + i print()? (1p)",
+                    "options": ["Python sammanfogar dem automatiskt", "Python konverterar numret till en sträng", "Python ger ett fel", "Python ignorerar operationen"],
+                    "correct": 2
+                },
+                {
+                    "question": "Hur kan du packa upp värden från en lista till variabler? (1p)",
+                    "options": ["Genom att använda en for-loop", "Genom att indexera manuellt", "Genom att använda direkt tilldelning", "Det är inte möjligt i Python"],
+                    "correct": 2
+                },
+                {
+                    "question": "Vilket påstående om globala variabler är sant? (1p)",
+                    "options": ["De kan endast användas inom funktionen där de definieras", "De kan endast användas i den fil där de skapades", "De kan användas både inom och utanför funktioner", "Python tillåter inte globala variabler"],
+                    "correct": 2
+                },
+                {
+                    "question": "Vad händer om du skapar en variabel med samma namn inuti en funktion som en global variabel? (1p)",
+                    "options": ["Den globala variabeln ändras", "Den lokala variabeln används inom funktionen, och den globala påverkas inte", "Python ger ett fel", "Båda variablerna får samma värde"],
+                    "correct": 1
+                },
+                {
+                    "question": "Hur kan du ändra en global variabel inuti en funktion? (1p)",
+                    "options": ["Genom att återdeklarera den i funktionen", "Genom att använda 'global' nyckelordet", "Genom att skicka den som ett argument", "Det går inte att ändra en global variabel i en funktion"],
+                    "correct": 1
+                }
+            ]
+        };
+        const AF1766_4 = {
+            name: "AF1766 kap 4, Datatyper",
+            questions: [
+                {
+                    "question": "Vilken av följande är INTE en inbyggd datatypkategori i Python? (1p)",
+                    "options": ["Text Type", "Numeric Types", "Array Type", "Boolean Type"],
+                    "correct": 2
+                },
+                {
+                    "question": "Hur hämtar du datatypen för en variabel 'x'? (1p)",
+                    "options": ["gettype(x)", "type(x)", "datatype(x)", "typeof(x)"],
+                    "correct": 1
+                },
+                {
+                    "question": "Vilket uttryck skapar en lista med elementen 'apple', 'banana' och 'cherry'? (1p)",
+                    "options": ["x = ('apple', 'banana', 'cherry')", "x = ['apple', 'banana', 'cherry']", "x = {'apple', 'banana', 'cherry'}", "x = frozenset({'apple', 'banana', 'cherry'})"],
+                    "correct": 1
+                },
+                {
+                    "question": "Vilken av följande är en sekvenstyp i Python? (1p)",
+                    "options": ["dict", "range", "set", "bool"],
+                    "correct": 1
+                },
+                {
+                    "question": "Hur kan du explicit ange att du vill skapa en frozenset med elementen 'apple', 'banana' och 'cherry'? (1p)",
+                    "options": ["x = set(['apple', 'banana', 'cherry'])", "x = frozenset(['apple', 'banana', 'cherry'])", "x = ['apple', 'banana', 'cherry']", "x = {'apple', 'banana', 'cherry'}"],
+                    "correct": 1
+                },
+                {
+                    "question": "Vilket av följande uttryck skapar en dict med nycklarna 'name' och 'age'? (1p)",
+                    "options": [
+                        "x = {'name': 'John', 'age': 36}",
+                        "x = ('name', 'John', 'age', 36)",
+                        "x = ['name', 'John', 'age', 36]",
+                        "x = {'John', 36}"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Vilken syntax används för att ställa in datatypen med en constructorfunktion för att skapa en sträng? (1p)",
+                    "options": ["x = str('Hello World')", "x = int('Hello World')", "x = bool('Hello World')", "x = float('Hello World')"],
+                    "correct": 0
+                },
+                {
+                    "question": "Vad blir datatypen för x i koden: x = bool(5)? (1p)",
+                    "options": ["int", "str", "bool", "float"],
+                    "correct": 2
+                },
+                {
+                    "question": "Vilken av följande konstruktioner används för att skapa en tuple? (1p)",
+                    "options": ["x = [1, 2, 3]", "x = (1, 2, 3)", "x = {1, 2, 3}", "x = range(3)"],
+                    "correct": 1
+                },
+                {
+                    "question": "Om du tar emot data via input(), vilken datatyp returneras då som standard? (1p)",
+                    "options": ["int", "float", "str", "bool"],
+                    "correct": 2
+                }
+                // Add more questions following the same format
+            ]
+        };
+        const AF1766_5 = {
+            name: "AF1766 kap 5-Numbers",
+            questions: [
+                {
+                    "question": "Vilka numeriska datatyper finns i Python? (1p)",
+                    "options": [
+                        "int, float, complex",
+                        "int, float, double",
+                        "integer, float, complex",
+                        "int, double, complex"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Hur skapas en komplex variabel i Python? (1p)",
+                    "options": [
+                        "z = 1",
+                        "z = 1j",
+                        "z = complex(1)",
+                        "z = '1j'"
+                    ],
+                    "correct": 1
+                },
+                {
+                    "question": "Vad gör funktionen type(x) i Python? (1p)",
+                    "options": [
+                        "Returnerar datatypen för x",
+                        "Ändrar datatypen för x",
+                        "Skriver ut värdet av x",
+                        "Konverterar x till en sträng"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Hur skrivs ett heltal (int) i Python? (1p)",
+                    "options": [
+                        "Utan decimaler",
+                        "Med decimaler",
+                        "Som en sträng",
+                        "Med exponentiell notation"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Vilket exempel visar korrekt exponentiell notation för ett flyttal? (1p)",
+                    "options": [
+                        "35e3",
+                        "35e",
+                        "3.14",
+                        "1j"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Vad sker vid konvertering av ett flyttal till ett heltal med int()? (1p)",
+                    "options": [
+                        "Decimalerna tas bort",
+                        "Decimalerna rundas upp",
+                        "Python ger ett fel",
+                        "Värdet förblir oförändrat"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Hur genererar du ett slumpmässigt tal mellan 1 och 9 med Python? (1p)",
+                    "options": [
+                        "random.randrange(1, 10)",
+                        "random.random(1, 10)",
+                        "random.randint(1, 9)",
+                        "random.choice(range(1, 10))"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Vad är en literal i Python? (1p)",
+                    "options": [
+                        "Ett direkt inskrivet värde i koden",
+                        "En variabel som refererar till ett värde",
+                        "En funktion som returnerar ett värde",
+                        "En metod för att konvertera datatyper"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Vilken funktion används för att konvertera en sträng som representerar ett tal till ett heltal? (1p)",
+                    "options": [
+                        "int()",
+                        "float()",
+                        "str()",
+                        "complex()"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Vad är syftet med en f-string i Python? (1p)",
+                    "options": [
+                        "Att kombinera text med variabelvärden med hjälp av { }",
+                        "Att generera slumpmässiga tal",
+                        "Att konvertera datatyper",
+                        "Att skapa en lista med variabler"
+                    ],
+                    "correct": 0
+                }
+            ]
+        };
+        const AF1766_6 = {
+            name: "AF1766 kap 6 Strängar",
+            questions: [
+                {
+                    "question": "Hur omges strängar i Python?",
+                    "options": [
+                        "Med enkla citattecken eller dubbla citattecken",
+                        "Med hakparenteser",
+                        "Med klamrar",
+                        "Med snedstreck"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Hur skriver du ut en sträng i Python?",
+                    "options": [
+                        "Genom att använda funktionen print()",
+                        "Genom att använda funktionen echo()",
+                        "Genom att använda funktionen write()",
+                        "Genom att använda funktionen output()"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Hur kan du inkludera citattecken i en sträng utan att orsaka fel?",
+                    "options": [
+                        "Genom att använda olika typer av citattecken eller escape-tecken",
+                        "Genom att använda hakparenteser",
+                        "Genom att kombinera strängar med + operatorn",
+                        "Det går inte att inkludera citattecken i en sträng"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Hur skapar du en flerradssträng i Python?",
+                    "options": [
+                        "Med tre citattecken (''' eller \"\"\")",
+                        "Genom att använda \\n-tecken",
+                        "Med semikolon mellan raderna",
+                        "Med dubbla citattecken runt varje rad"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Hur får du tillgång till ett enskilt tecken i en sträng, t.ex. det andra tecknet i \"Hello\"?",
+                    "options": [
+                        "Genom att använda indexering med hakparenteser (ex. sträng[1])",
+                        "Genom att använda slice()-metoden",
+                        "Genom att använda en for-loop",
+                        "Genom att använda funktionen len()"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Vad returnerar funktionen len() när den används på en sträng?",
+                    "options": [
+                        "Antalet tecken i strängen",
+                        "Det första tecknet i strängen",
+                        "En kopia av strängen",
+                        "Det sista tecknet i strängen"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Hur kontrollerar du om en viss substring, exempelvis \"free\", finns i en sträng?",
+                    "options": [
+                        "Genom att använda operatorn in, t.ex. if \"free\" in txt:",
+                        "Genom att använda metoden contains()",
+                        "Genom att använda metoden find() utan villkor",
+                        "Genom att använda operatorn not in"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Hur skriver du ut en del av en sträng (slicing) från index 2 till 5 (exklusive index 5)?",
+                    "options": [
+                        "sträng[2:5]",
+                        "sträng[2,5]",
+                        "sträng.slice(2,5)",
+                        "sträng[5:2]"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Hur kombinerar du två strängar, a och b, med ett mellanslag mellan dem?",
+                    "options": [
+                        "a + \" \" + b",
+                        "a + b",
+                        "a, b",
+                        "a.concat(b)"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Vad är syftet med f-strängar i Python?",
+                    "options": [
+                        "Att infoga variabler direkt inuti strängar med hjälp av { }",
+                        "Att konvertera strängar till tal",
+                        "Att dela upp strängar i listor",
+                        "Att ta bort blanksteg från strängar"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Vilket escape-tecken används för att infoga en ny rad i en sträng?",
+                    "options": [
+                        "\\n",
+                        "\\t",
+                        "\\r",
+                        "\\b"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Vilken metod returnerar en version av en sträng med alla tecken i versaler?",
+                    "options": [
+                        "upper()",
+                        "lower()",
+                        "capitalize()",
+                        "swapcase()"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Vilken metod används för att dela upp en sträng i en lista baserat på en given separator?",
+                    "options": [
+                        "split()",
+                        "join()",
+                        "partition()",
+                        "replace()"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Vilken metod ersätter delar av en sträng med en annan sträng?",
+                    "options": [
+                        "replace()",
+                        "split()",
+                        "strip()",
+                        "format()"
+                    ],
+                    "correct": 0
+                }               // Add more questions following the same format
+            ]
+        };
+        const AF1766_7 = {
+            name: "AF1766 kap 7 Booleans",
+            questions: [
+                {
+                    "question": "Vad representerar en boolean i Python?",
+                    "options": [
+                        "Ett av två värden: True eller False",
+                        "Ett heltal",
+                        "En sträng",
+                        "En lista"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Vad returnerar uttrycket 10 > 9?",
+                    "options": [
+                        "True",
+                        "False",
+                        "10",
+                        "9"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Vad returnerar uttrycket 10 == 9?",
+                    "options": [
+                        "True",
+                        "False",
+                        "10",
+                        "9"
+                    ],
+                    "correct": 1
+                },
+                {
+                    "question": "Vilket av följande uttryck returnerar False?",
+                    "options": [
+                        "bool(0)",
+                        "bool('Hello')",
+                        "bool(123)",
+                        "bool(['apple', 'cherry', 'banana'])"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Vilket värde utvärderas till False i Python?",
+                    "options": [
+                        "En tom sträng",
+                        "En icke-tom sträng",
+                        "Ett icke-noll heltal",
+                        "En icke-tom lista"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Vad returnerar funktionen bool() när den används på en variabel med innehållet 'Hello'?",
+                    "options": [
+                        "True",
+                        "False",
+                        "Variabeln oförändrad",
+                        "Ett felmeddelande"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Vad händer i en if-sats om villkoret utvärderas till False?",
+                    "options": [
+                        "Koden i else-satsen körs",
+                        "Koden i if-satsen körs",
+                        "Programmet stannar",
+                        "Programmet kraschar"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Vilken operator används för att jämföra två värden för likhet i Python?",
+                    "options": [
+                        "==",
+                        "=",
+                        "!==",
+                        "><"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Hur kan du utvärdera om ett uttryck är True eller False i Python?",
+                    "options": [
+                        "Genom att använda funktionen bool()",
+                        "Genom att använda funktionen type()",
+                        "Genom att använda funktionen str()",
+                        "Genom att använda en if-sats"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "Vilket av följande kodexempel visar ett korrekt användande av en if-sats med ett boolean-uttryck?",
+                    "options": [
+                        "if 10 < 9: print('Condition met')",
+                        "if 10 > 9: print('Condition met')",
+                        "if 10 = 9: print('Condition met')",
+                        "if 10 == 9: print('Condition met')"
+                    ],
+                    "correct": 1
+                }                // Add more questions following the same format
+            ]
+        };
+
+
+        // Initialize with both quizzes
+
         // DOM Elements
         const welcomeScreen = document.getElementById('welcome-screen');
         const quizScreen = document.getElementById('quiz-screen');
         const resultsScreen = document.getElementById('results-screen');
         const editorScreen = document.getElementById('editor-screen');
+        const quizSelectionScreen = document.getElementById('quiz-selection-screen');
         
         const questionText = document.getElementById('question-text');
+        const currentQuizTitle = document.getElementById('current-quiz-title');
         const optionsContainer = document.getElementById('options-container');
         const feedbackElement = document.getElementById('feedback');
         const progressBar = document.getElementById('progress-bar');
@@ -513,57 +936,170 @@
         const scoreElement = document.getElementById('score');
         const totalElement = document.getElementById('total');
         
-        const startSampleButton = document.getElementById('start-sample-btn');
+        const selectQuizButton = document.getElementById('select-quiz-btn');
         const createQuizButton = document.getElementById('create-quiz-btn');
         const saveQuizButton = document.getElementById('save-quiz-btn');
         const restartButton = document.getElementById('restart-btn');
         const homeButton = document.getElementById('home-btn');
         const backFromEditorButton = document.getElementById('back-from-editor-btn');
+        const backFromSelectionButton = document.getElementById('back-from-selection-btn');
+        const selectAnotherButton = document.getElementById('select-another-btn');
         
         const quizEditor = document.getElementById('quiz-editor');
+        const quizNameInput = document.getElementById('quiz-name-input');
         const editorError = document.getElementById('editor-error');
+        const quizListContainer = document.getElementById('quiz-list');
         
         const randomizeToggle = document.getElementById('randomize-toggle');
         const editorRandomizeToggle = document.getElementById('editor-randomize-toggle');
         const randomizeQuestionsToggle = document.getElementById('randomize-questions-toggle');
         const editorRandomizeQuestionsToggle = document.getElementById('editor-randomize-questions-toggle');
         
-        // Event Listeners
-        startSampleButton.addEventListener('click', () => {
-            shouldRandomizeOptions = randomizeToggle.checked;
-            shouldRandomizeQuestions = randomizeQuestionsToggle.checked;
-            startQuiz(sampleQuizData);
-        });
-        createQuizButton.addEventListener('click', showEditorScreen);
-        saveQuizButton.addEventListener('click', saveAndStartQuiz);
-        nextButton.addEventListener('click', handleNextButtonClick);
-        restartButton.addEventListener('click', restartQuiz);
-        homeButton.addEventListener('click', showWelcomeScreen);
-        backFromEditorButton.addEventListener('click', showWelcomeScreen);
+        // Load quizzes from localStorage if available
+        function loadQuizzes() {
+            const savedQuizzes = localStorage.getItem('af1729quizzes');
+            if (savedQuizzes) {
+                try {
+                    quizzes = JSON.parse(savedQuizzes);
+                    
+                    // Check if our new quiz already exists in saved quizzes
+                    const hasAF1766_3 = quizzes.some(quiz => quiz.name === AF1766_3.name);
+                    const hasAF1766_4 = quizzes.some(quiz => quiz.name === AF1766_4.name);
+                    const hasAF1766_5 = quizzes.some(quiz => quiz.name === AF1766_5.name);
+                    const hasAF1766_6 = quizzes.some(quiz => quiz.name === AF1766_6.name);
+                    const hasAF1766_7 = quizzes.some(quiz => quiz.name === AF1766_7.name);
+                    
+                    // If not, add it
+                    if (!hasAF1766_3) {
+                        quizzes.push(AF1766_3);        
+                    }
+                    if (!hasAF1766_4) {
+                        quizzes.push(AF1766_4);        
+                    }
+                     if (!hasAF1766_5) {
+                        quizzes.push(AF1766_5);        
+                    }
+                     if (!hasAF1766_6) {
+                        quizzes.push(AF1766_6);        
+                    }
+                     if (!hasAF1766_7) {
+                        quizzes.push(AF1766_7);        
+                    }
+                    
+                } catch (e) {
+                    console.error('Error loading saved quizzes', e);
+                    // If there's an error, start fresh with the sample quiz and our new quiz
+                    quizzes = [AF1729, AF1766_3,AF1766_4,AF1766_5,AF1766_6,AF1766_7];
+                }
+            } else {
+                // No saved quizzes, initialize with both quizzes
+                quizzes = [AF1729, AF1766_3,AF1766_4,AF1766_5,AF1766_6,AF1766_7];
+            }
+            
+            // Save the quizzes to persist the new quiz
+            saveQuizzes();
+        }
         
-        // Sync randomize toggles
-        randomizeToggle.addEventListener('change', () => {
-            editorRandomizeToggle.checked = randomizeToggle.checked;
-        });
+        // Save quizzes to localStorage
+        function saveQuizzes() {
+            try {
+                localStorage.setItem('af1729quizzes', JSON.stringify(quizzes));
+            } catch (e) {
+                console.error('Error saving quizzes', e);
+                alert('Kunde inte spara quizzen. Kontrollera din webbläsares lagringsinställningar.');
+            }
+        }
         
-        editorRandomizeToggle.addEventListener('change', () => {
-            randomizeToggle.checked = editorRandomizeToggle.checked;
-        });
+        // Initialize the application
+        function init() {
+            loadQuizzes();
+            updateQuizList();
+            
+            // Event Listeners
+            selectQuizButton.addEventListener('click', showQuizSelectionScreen);
+            createQuizButton.addEventListener('click', showEditorScreen);
+            saveQuizButton.addEventListener('click', saveQuiz);
+            nextButton.addEventListener('click', handleNextButtonClick);
+            restartButton.addEventListener('click', restartQuiz);
+            homeButton.addEventListener('click', showWelcomeScreen);
+            backFromEditorButton.addEventListener('click', showWelcomeScreen);
+            backFromSelectionButton.addEventListener('click', showWelcomeScreen);
+            selectAnotherButton.addEventListener('click', showQuizSelectionScreen);
+            
+            // Sync randomize toggles
+            randomizeToggle.addEventListener('change', () => {
+                editorRandomizeToggle.checked = randomizeToggle.checked;
+            });
+            
+            editorRandomizeToggle.addEventListener('change', () => {
+                randomizeToggle.checked = editorRandomizeToggle.checked;
+            });
+            
+            randomizeQuestionsToggle.addEventListener('change', () => {
+                editorRandomizeQuestionsToggle.checked = randomizeQuestionsToggle.checked;
+            });
+            
+            editorRandomizeQuestionsToggle.addEventListener('change', () => {
+                randomizeQuestionsToggle.checked = editorRandomizeQuestionsToggle.checked;
+            });
+        }
         
-        randomizeQuestionsToggle.addEventListener('change', () => {
-            editorRandomizeQuestionsToggle.checked = randomizeQuestionsToggle.checked;
-        });
+        // Update the quiz list in the selection screen
+        function updateQuizList() {
+            quizListContainer.innerHTML = '';
+            
+            quizzes.forEach((quiz, index) => {
+                const quizItem = document.createElement('div');
+                quizItem.classList.add('quiz-item');
+                
+                const quizInfo = document.createElement('div');
+                
+                const quizTitle = document.createElement('div');
+                quizTitle.classList.add('quiz-title');
+                quizTitle.textContent = quiz.name || `Quiz ${index + 1}`;
+                
+                const quizStats = document.createElement('div');
+                quizStats.classList.add('quiz-info');
+                quizStats.textContent = `${quiz.questions.length} frågor`;
+                
+                quizInfo.appendChild(quizTitle);
+                quizInfo.appendChild(quizStats);
+                
+                const quizActions = document.createElement('div');
+                quizActions.classList.add('quiz-actions');
+                
+                const startButton = document.createElement('button');
+                startButton.classList.add('btn', 'btn-accent');
+                startButton.textContent = 'Starta';
+                startButton.addEventListener('click', () => {
+                    startQuiz(index);
+                });
+                
+                const editButton = document.createElement('button');
+                editButton.classList.add('btn');
+                editButton.textContent = 'Redigera';
+                editButton.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    editQuiz(index);
+                });
+                
+                quizActions.appendChild(startButton);
+                quizActions.appendChild(editButton);
+                
+                quizItem.appendChild(quizInfo);
+                quizItem.appendChild(quizActions);
+                
+                quizListContainer.appendChild(quizItem);
+            });
+        }
         
-        editorRandomizeQuestionsToggle.addEventListener('change', () => {
-            randomizeQuestionsToggle.checked = editorRandomizeQuestionsToggle.checked;
-        });
-        
-        // Functions
+        // Show specific screen
         function showScreen(screen) {
             welcomeScreen.classList.remove('active');
             quizScreen.classList.remove('active');
             resultsScreen.classList.remove('active');
             editorScreen.classList.remove('active');
+            quizSelectionScreen.classList.remove('active');
             
             screen.classList.add('active');
         }
@@ -572,23 +1108,45 @@
             showScreen(welcomeScreen);
         }
         
-        function showEditorScreen() {
+        function showQuizSelectionScreen() {
+            updateQuizList();
+            showScreen(quizSelectionScreen);
+        }
+        
+        function showEditorScreen(isEditing = false) {
             showScreen(editorScreen);
-            // Prepopulate with sample if empty
-            if (!quizEditor.value.trim()) {
-                quizEditor.value = JSON.stringify(sampleQuizData, null, 2);
+            if (!isEditing) {
+                // Clear editor for new quiz
+                quizEditor.value = JSON.stringify([
+                    {
+                        question: "Sample question",
+                        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+                        correct: 0
+                    }
+                ], null, 2);
+                quizNameInput.value = "";
             }
         }
         
-        function saveAndStartQuiz() {
+        function editQuiz(index) {
+            const quiz = quizzes[index];
+            quizNameInput.value = quiz.name;
+            quizEditor.value = JSON.stringify(quiz.questions, null, 2);
+            currentQuizIndex = index;
+            showEditorScreen(true);
+        }
+        
+        function saveQuiz() {
             try {
-                const quizData = JSON.parse(quizEditor.value);
-                if (!Array.isArray(quizData) || quizData.length === 0) {
+                const quizName = quizNameInput.value.trim() || `Quiz ${quizzes.length + 1}`;
+                const questions = JSON.parse(quizEditor.value);
+                
+                if (!Array.isArray(questions) || questions.length === 0) {
                     throw new Error('Quiz must be a non-empty array of questions');
                 }
                 
                 // Validate each question
-                quizData.forEach((question, index) => {
+                questions.forEach((question, index) => {
                     if (!question.question || !Array.isArray(question.options) || 
                         question.options.length < 2 || 
                         typeof question.correct !== 'number' ||
@@ -598,20 +1156,46 @@
                     }
                 });
                 
+                const newQuiz = {
+                    name: quizName,
+                    questions: questions
+                };
+                
+                if (currentQuizIndex >= 0) {
+                    // Update existing quiz
+                    quizzes[currentQuizIndex] = newQuiz;
+                } else {
+                    // Add new quiz
+                    quizzes.push(newQuiz);
+                }
+                
+                // Save to localStorage
+                saveQuizzes();
+                
                 editorError.textContent = '';
-                shouldRandomizeOptions = editorRandomizeToggle.checked;
-                shouldRandomizeQuestions = editorRandomizeQuestionsToggle.checked;
-                startQuiz(quizData);
+                currentQuizIndex = -1;
+                
+                // Go to selection screen
+                showQuizSelectionScreen();
             } catch (error) {
                 editorError.textContent = error.message;
             }
         }
         
-        function startQuiz(quizData) {
-            // Make a deep copy of the quiz data to prevent modifications to the original
-            currentQuestions = JSON.parse(JSON.stringify(quizData));
+        function startQuiz(quizIndex) {
+            currentQuizIndex = quizIndex;
+            const quiz = quizzes[quizIndex];
+            
+            // Make a deep copy of the quiz questions
+            currentQuestions = JSON.parse(JSON.stringify(quiz.questions));
+            
+            // Set title
+            currentQuizTitle.textContent = quiz.name;
             
             // Randomize question order if enabled
+            shouldRandomizeOptions = randomizeToggle.checked;
+            shouldRandomizeQuestions = randomizeQuestionsToggle.checked;
+            
             if (shouldRandomizeQuestions) {
                 currentQuestions = shuffleArray(currentQuestions);
             }
@@ -679,6 +1263,7 @@
             answeredCurrentQuestion = false;
         }
         
+       
         function selectOption(displayIndex) {
             if (answeredCurrentQuestion) return;
             
@@ -716,14 +1301,14 @@
             
             // Change button text on last question
             if (currentQuestionIndex === currentQuestions.length - 1) {
-                nextButton.textContent = 'See Results';
+                nextButton.textContent = 'Se Resultat';
             }
         }
         
         function handleNextButtonClick() {
             if (!answeredCurrentQuestion && selectedOptionIndex === -1) {
                 // If no answer selected, prompt user to select one
-                feedbackElement.textContent = 'Please select an answer before continuing';
+                feedbackElement.textContent = 'Välj ett svar innan du fortsätter';
                 feedbackElement.className = 'feedback incorrect';
                 feedbackElement.style.display = 'block';
                 return;
@@ -747,20 +1332,15 @@
         }
         
         function restartQuiz() {
-            if (currentQuestions.length > 0) {
-                // If question randomization is enabled, re-shuffle the questions for restart
-                if (shouldRandomizeQuestions) {
-                    currentQuestions = shuffleArray(currentQuestions);
-                }
-                
-                currentQuestionIndex = 0;
-                score = 0;
-                showScreen(quizScreen);
-                displayQuestion();
+            if (currentQuizIndex >= 0) {
+                startQuiz(currentQuizIndex);
             } else {
                 showWelcomeScreen();
             }
         }
+        
+        // Initialize the application
+        init();
     </script>
 </body>
 </html>
