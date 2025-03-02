@@ -423,21 +423,141 @@
         const AF1729 = {
             name: "Quiz 1: AF1729",
             questions: [
-                {
-                    question: "Vilket dokument innehåller Trafikverkets nationella val för valbara parametrar i Eurokoder i Sverige? (1p)",
-                    options: ["EKS 10", "Krav Brobyggande", "Råd Brobyggande", "TSFS (tidigare TRVFS)"],
-                    correct: 3
-                },
-                {
-                    question: "Vilken handling innehåller Trafikverkets krav för dimensionering av broar? (1p)",
-                    options: ["Krav Brobyggande", "Råd Brobyggande", "EKS 10", "TK Geo"],
-                    correct: 0
-                },
-                {
-                    question: "Vilket tillstånd råder i stadium II för armerat betongtvärsnitt? (1p)",
-                    options: ["Osprucket", "Sprucket", "Krossad betong i tryckt betong", "Plastisering i dragen armeringsjärn"],
-                    correct: 1
-                }
+            {
+                question: "Vilket dokument innehåller Trafikverkets nationella val för valbara parametrar i Eurokoder i Sverige? (1p)",
+                options: ["EKS 10", "Krav Brobyggande", "Råd Brobyggande", "TSFS (tidigare TRVFS)"],
+                correct: 3
+            },
+            {
+                question: "Vilken handling innehåller Trafikverkets krav för dimensionering av broar? (1p)",
+                options: ["Krav Brobyggande", "Råd Brobyggande", "EKS 10", "TK Geo"],
+                correct: 0
+            },
+            {
+                question: "Vilket tillstånd råder i stadium II för armerat betongtvärsnitt? (1p)",
+                options: ["Osprucket", "Sprucket", "Krossad betong i tryckt betong", "Plastisering i dragen armeringsjärn"],
+                correct: 1
+            },
+            {
+                question: "Ange vilket gränstillstånd inkluderar stadium I och II? (1p)",
+                options: ["Bruksgränstillstånd", "Brottgränstillstånd", "Utmattningstillstånd", "Ingen av ovanstående alternativ"],
+                correct: 0
+            },
+            {
+                question: "Ange vilket gränstillstånd inkluderar stadium III? (1p)",
+                options: ["Bruksgränstillstånd", "Brottgränstillstånd", "Utmattningstillstånd", "Ingen av ovanstående alternativ"],
+                correct: 1
+            },
+            {
+                question: "Välj kriteriet som inte styr valet av täckande betongskikt? (1p)",
+                options: ["Utmattning", "Beständighet (exponeringsklass)", "Förankring (kraftöverföring)", "Ingen av ovanstående alternativ"],
+                correct: 0
+            },
+            {
+                question: "Frekvent lastkombination används för? (1p)",
+                options: [
+                    "Armering i Brottgränstillstånd (exponeringsklass)",
+                    "Kontroll av uppsprickning",
+                    "Armering m.h.t. krav på sprickvidd",
+                    "Ingen av ovanstående alternativ"
+                ],
+                correct: 1
+            },
+            {
+                question: "Kvasi-permanent lastkombination används för? (1p)",
+                options: [
+                    "Utmattning",
+                    "Armering i Brottgränstillstånd (exponeringsklass)",
+                    "Kontroll av uppsprickning",
+                    "Armering m.h.t. krav på sprickvidd"
+                ],
+                correct: 3
+            },
+            {
+                question: "Vid beräkning av grundläggnings stabilitet för bottenplatta för packad fyllning kontrolleras om konstruktionen glider (villkor för glidning). Vilka av följande krafter är drivande kraft för glidning?",
+                options: ["Horisontell kraft (H)", "Vertikal kraft (V)", "Friktionskraft mellan bottenplatta och fyllning", "Friktionskraft mellan ballasten i fyllningen"],
+                correct: 0
+            },
+            {
+                question: "Vilken uppsättning av lastkoefficienter enligt Eurokoder används för kontroll av grundläggningsstabilitet för stödmur på packad fyllning?",
+                options: ["Uppsättning A", "Uppsättning B", "Uppsättning C", "Ingen av ovanstående alternativ"],
+                correct: 0
+            },
+            {
+                question: "Vad skall väljas som minsta säkerhetsfaktor S vid kontroll av de tre kriterierna för grundläggningens stabilitet (Jämvikt) enligt ovan?",
+                options: ["1", "1,5", "1,8", "2"],
+                correct: 1
+            },
+            {
+                question: "Vid kontroll av grundläggningens stabilitet skall ett antal lastfall studeras. Välj vilket lastfall som ger alltid lägsta säkerhetsfaktor S för kontroll av risk för glidning?",
+                options: ["Vmin/Hmin", "Vmin/Hmax", "Vmax/Hmax", "Vmax/Hmin"],
+                correct: 1
+            },
+            {
+                question: "Vid kontroll av grundläggningens stabilitet beräknas tillhörande moment av alla karakteristiska laster till en specifik punkt (så kallade punkt A). Var ligger punkt A i stödmurens geometri?",
+                options: ["Underkant av bottenplattans baktass", "Anslutningen mellan mur och bottenplatta", "Underkant av bottenplattans framtass", "Underkant av bottenplattans mittpunkt"],
+                correct: 2
+            },
+            {
+                question: "I fall låg säkerhetsfaktor S erhålls vid de tre kontrollerna av grundläggningens stabilitet, hur man förhöjer säkerhetsfaktorn S genom att ändra på stödmurens geometri?",
+                options: ["Välj en högre mur", "Välj en breddare bottenplatta", "Välj en kortare bottenplatta", "Välj en breddare kantbalk"],
+                correct: 1
+            },
+            {
+                question: "Vid kontroll av grundläggningens stabilitet beräknas de drivande horisontella lasterna av jordtryck och överlast bakom en specifik punkt så kallade 'gardin'. Var placeras gardinen i stödmurens geometri?",
+                options: ["Vid baktassens ände", "Vid murens insida", "Vid mitten av bottenplattans bredd", "Vid framtassens ände"],
+                correct: 0
+            },
+            {
+                question: "Vilken fördelning används för den förenklade modellen av grundpåverkan under bottenplatta?",
+                options: ["Triangulär fördelning", "Rektangulär (konstant) fördelning", "Parabolisk fördelning", "Bilinjär fördelning"],
+                correct: 1
+            },
+            {
+                question: "I vilken uppsättning ingår formler 6.10a och 6.10b?",
+                options: ["Uppsättning C", "Uppsättning A", "Uppsättning B", "Uppsättning D"],
+                correct: 2
+            },
+            {
+                question: "Hur många snitt i bottenplattans baktass är optimalt (minsta nödvändiga) för dimensionering av bottenplatta m.h.t. avkortningen av armering?",
+                options: ["5 snitt", "3 snitt", "2 snitt", "1 snitt"],
+                correct: 1
+            },
+            {
+                question: "Var placeras horisontella laster av jordtryck och överlast vid dimensionering av mur?",
+                options: ["Bakom muren", "Bakom bottenplattans baktass", "3 meter bakom bottenplattans baktass", "1 meter bakom bottenplattans baktass"],
+                correct: 0
+            },
+            {
+                question: "Hur påverkas jordtryckskoefficienten av en lutande mur som lutar mot jordfyllningen?",
+                options: ["Ingen påverkan på koefficienten för jordtryck", "Reduktion av koefficienten för jordtryck", "Förhöjning av koefficienten för jordtryck", "Fördubbling av koefficienten för jordtryck"],
+                correct: 1
+            },
+            {
+                question: "Vad är beteckning för koefficienten för vilojordtryck?",
+                options: ["Ka", "Ko", "Kp", "Ks"],
+                correct: 1
+            },
+            {
+                question: "Vilken jordtryckskoefficient används om stödmuren kan deformeras under verkande jordtryck?",
+                options: ["Vilojordtryck", "Aktivt jordtryck", "Passivt jordtryck", "Ingen av ovanstående alternativ"],
+                correct: 1
+            },
+            {
+                question: "Vilken lastkoefficient används för grundpåverkan vid beräkning av största och minsta snittkraft (dvs V och H och Mill) i ett snitt i bottenplatta?",
+                options: ["1,35", "1,5", "1,0", "1,35*0,89"],
+                correct: 2
+            },
+            {
+                question: "Hur många snitt i mur är optimalt (minsta nödvändiga) för dimensionering av mur m.h.t. avkortningen av armering?",
+                options: ["5 snitt", "3 snitt", "2 snitt", "1 snitt"],
+                correct: 1
+            },
+            {
+                question: "Vilken av de nedanstående laster är variabellast?",
+                options: ["Betongens egentyngd", "Fyllningens egentyngd", "Trafiklast ovanpå stödmurens jordfyllda sida (överlast)", "Beklädnad"],
+                correct: 2
+            }
             ],
             
         };
