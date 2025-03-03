@@ -1024,8 +1024,740 @@
                 }              // Add more questions following the same format
             ]
         };
-
-
+		const AF1766_8 = {
+            name: "AF1766 kap 9 Operators",
+            questions: [
+				{
+					"question": "Vad returnerar följande kod?",
+					"code": "print((6 + 3) - (6 + 3))",
+					"options": [
+					  "0",
+					  "3",
+					  "6",
+					  "Felmeddelande"
+					],
+					"correct": 0
+				},
+				{
+					"question": "Vad returnerar följande kod?",
+					"code": "print(100 + 5 * 3)",
+					"options": [
+					  "115",
+					  "125",
+					  "115",
+					  "100"
+					],
+					"correct": 2
+				},
+				{
+					"question": "Vad returnerar följande kod?",
+					"code": "print(5 + 4 - 7 + 3)",
+					"options": [
+					  "5",
+					  "3",
+					  "7",
+					  "1"
+					],
+					"correct": 1
+				 },
+				 {
+					"question": "Vilken operator har högst prioritet?",
+					"code": "print(2 + 3 * 4 ** 2)",
+					"options": [
+					  "+",
+					  "*",
+					  "**",
+					  "/"
+					],
+					"correct": 2
+				},
+				{
+					"question": "Vad returnerar följande kod?",
+					"code": "print(10 >= 5 and 5 <= 5)",
+					"options": [
+					  "True",
+					  "False"
+					],
+					"correct": 0
+				},
+				{
+					"question": "Vad returnerar följande kod?",
+					"code": "print(not (10 > 5) == (5 < 10))",
+					"options": [
+					  "True",
+					  "False"
+					],
+					"correct": 1
+				},
+				{
+					"question": "Vad returnerar följande kod?",
+					"code": "a = [1, 2, 3]\nb = a\nprint(a is b)",
+					"options": [
+					  "True",
+					  "False"
+					],
+					"correct": 0
+				},
+				{
+					"question": "Vad returnerar följande kod?",
+					"code": "print(3 in [1, 2, 3])",
+					"options": [
+					  "True",
+					  "False"
+					],
+					"correct": 0
+				},
+				{
+					"question": "Vad returnerar följande kod?",
+					"code": "print(8 // 3 * 3 % 2)",
+					"options": [
+					  "0",
+					  "1",
+					  "2",
+					  "Felmeddelande"
+					],
+					"correct": 1
+				},
+				{
+					"question": "Vad returnerar följande kod?",
+					"code": "print((4 & 3) | (2 ^ 1))",
+					"options": [
+					  "0",
+					  "1",
+					  "2",
+					  "3"
+					],
+					"correct": 3
+				},
+				{
+					"question": "Vad returnerar följande kod?",
+					"code": "print(5 << 2)",
+					"options": [
+					  "10",
+					  "15",
+					  "20",
+					  "25"
+					],
+					"correct": 2
+				},
+				{
+					"question": "Vad returnerar följande kod?",
+					"code": "print(7 if 2 + 2 == 4 else 9)",
+					"options": [
+					  "7",
+					  "9",
+					  "Felmeddelande",
+					  "None"
+					],
+					"correct": 0
+				},
+				{
+					"question": "Vad returnerar följande kod?",
+					"code": "print(10 ^ 3)",
+					"options": [
+					  "7",
+					  "13",
+					  "9",
+					  "2"
+					],
+					"correct": 0
+				},
+				{
+					"question": "Vad returnerar följande kod?",
+					"code": "print(8 / 4 / 2)",
+					"options": [
+					  "1.0",
+					  "2.0",
+					  "4.0",
+					  "0.5"
+					],
+					"correct": 0
+				},
+				{
+					"question": "Vad returnerar följande kod?",
+					"code": "print(10 > 5 < 8)",
+					"options": [
+					  "True",
+					  "False",
+					  "Felmeddelande",
+					  "None"
+					],
+					"correct": 0
+				},
+				{
+					"question": "Vad returnerar följande kod?",
+					"code": "print(False and True or True and False)",
+					"options": [
+					  "True",
+					  "False"
+					],
+					"correct": 1
+				},
+				{
+					"question": "Vad returnerar följande kod?",
+					"code": "print(2 < 3 == 3 > 2)",
+					"options": [
+					  "True",
+					  "False"
+					],
+					"correct": 0
+				},
+				 {
+					"question": "Hur skapar man en lista i Python?",
+					"options": [
+					  "list = {}",
+					  "list = []",
+					  "list = ()",
+					  "list = <>"
+					],
+					"correct": 1
+				  },
+				  {
+					"question": "Hur kan du få tag på det tredje elementet i listan mylist = ['apple', 'banana', 'cherry', 'orange']?",
+					"options": [
+					  "mylist(2)",
+					  "mylist[3]",
+					  "mylist[2]",
+					  "mylist[-3]"
+					],
+					"correct": 2
+				  },
+				  {
+					"question": "Vilken metod används för att lägga till ett element i slutet av en lista?",
+					"options": [
+					  "insert()",
+					  "extend()",
+					  "add()",
+					  "append()"
+					],
+					"correct": 3
+				  },
+				  {
+					"question": "Vilket av följande påståenden om listor är sant?",
+					"options": [
+					  "Listor i Python är oföränderliga",
+					  "Listor kan innehålla olika datatyper",
+					  "Listor kan inte innehålla dubbletter",
+					  "Listor har ingen ordning"
+					],
+					"correct": 1
+				  },
+				  {
+					"question": "Vad returnerar följande kod? newlist = [x for x in range(10) if x < 5]",
+					"options": [
+					  "En lista med siffrorna 0 till 4",
+					  "En lista med siffrorna 5 till 9",
+					  "En lista med siffrorna 0 till 9",
+					  "Ett fel"
+					],
+					"correct": 0
+				  },
+				  {
+					"question": "Hur kan du sortera en lista i Python i fallande ordning?",
+					"options": [
+					  "list.sort()",
+					  "sorted(list, reverse=True)",
+					  "list.sort(reverse=True)",
+					  "Alla ovanstående"
+					],
+					"correct": 3
+				  },
+				  {
+					"question": "Vilken syntax används för att skapa en list comprehension?",
+					"options": [
+					  "[x for x in list]",
+					  "{x for x in list}",
+					  "(x for x in list)",
+					  "<x for x in list>"
+					],
+					"correct": 0
+				  },
+				  {
+					"question": "Vad returnerar följande kod? newlist = [x.upper() for x in ['apple', 'banana', 'cherry']]",
+					"options": [
+					  "['APPLE', 'BANANA', 'CHERRY']",
+					  "['apple', 'banana', 'cherry']",
+					  "['Apple', 'Banana', 'Cherry']",
+					  "Ett fel"
+					],
+					"correct": 0
+				  },
+				  {
+					"question": "Hur sammanfogar du två listor i Python?",
+					"options": [
+					  "list1 + list2",
+					  "list1.extend(list2)",
+					  "list1.append(list2)",
+					  "A och B"
+					],
+					"correct": 3
+				  },
+				  {
+					"question": "Vilken metod används för att rensa en lista helt?",
+					"options": [
+					  "del list",
+					  "list.clear()",
+					  "list.remove()",
+					  "list.pop()"
+					],
+					"correct": 1
+				  },
+				  {
+					"question": "Vad gör metoden sort() i en lista?",
+					"options": [
+					  "Sorterar listan i stigande ordning",
+					  "Sorterar listan i fallande ordning",
+					  "Sorterar listan slumpmässigt",
+					  "Gör inget"
+					],
+					"correct": 0
+				  },
+				  {
+					"question": "Hur kan du vända en lista?",
+					"options": [
+					  "list.reverse()",
+					  "list[::-1]",
+					  "sorted(list, reverse=True)",
+					  "A och B"
+					],
+					"correct": 3
+				  },
+				  {
+					"question": "Vilken metod kan användas för att kopiera en lista?",
+					"options": [
+					  "list.copy()",
+					  "list.clone()",
+					  "list.duplicate()",
+					  "copy(list)"
+					],
+					"correct": 0
+				  },
+				  {
+					"question": "Vad returnerar följande kod? [x if x != 'banana' else 'orange' for x in ['apple', 'banana', 'cherry']]",
+					"options": [
+					  "['apple', 'banana', 'cherry']",
+					  "['apple', 'orange', 'cherry']",
+					  "['orange', 'orange', 'orange']",
+					  "Ett fel"
+					],
+					"correct": 1
+				  }				
+            ]
+        };
+		const AF1766_9 = {
+            name: "AF1766 kap 9 List",
+            questions: [
+				 {
+					"question": "Hur skapar man en lista i Python?",
+					"options": [
+					  "list = {}",
+					  "list = []",
+					  "list = ()",
+					  "list = <>"
+					],
+					"correct": 1
+				  },
+				  {
+					"question": "Hur kan du få tag på det tredje elementet i listan mylist = ['apple', 'banana', 'cherry', 'orange']?",
+					"options": [
+					  "mylist(2)",
+					  "mylist[3]",
+					  "mylist[2]",
+					  "mylist[-3]"
+					],
+					"correct": 2
+				  },
+				  {
+					"question": "Vilken metod används för att lägga till ett element i slutet av en lista?",
+					"options": [
+					  "insert()",
+					  "extend()",
+					  "add()",
+					  "append()"
+					],
+					"correct": 3
+				  },
+				  {
+					"question": "Vilket av följande påståenden om listor är sant?",
+					"options": [
+					  "Listor i Python är oföränderliga",
+					  "Listor kan innehålla olika datatyper",
+					  "Listor kan inte innehålla dubbletter",
+					  "Listor har ingen ordning"
+					],
+					"correct": 1
+				  },
+				  {
+					"question": "Vilken metod används för att ta bort ett specifikt element från en lista?",
+					"options": [
+					  "delete()",
+					  "pop()",
+					  "remove()",
+					  "discard()"
+					],
+					"correct": 2
+				  },
+				  {
+					"question": "Hur får du ut längden på en lista i Python?",
+					"options": [
+					  "size(list)",
+					  "list.length()",
+					  "count(list)",
+					  "len(list)"
+					],
+					"correct": 3
+				  },
+				  {
+					"question": "Vilken av följande metoder används för att rensa hela listan?",
+					"options": [
+					  "del list",
+					  "list.clear()",
+					  "list.remove()",
+					  "list.pop()"
+					],
+					"correct": 1
+				  },
+				  {
+					"question": "Hur skapar man en tom lista?",
+					"options": [
+					  "list = []",
+					  "list = ()",
+					  "list = {}",
+					  "list = None"
+					],
+					"correct": 0
+				  },
+				  {
+					"question": "Hur kontrollerar man om 'apple' finns i listan fruits = ['apple', 'banana', 'cherry']?",
+					"options": [
+					  "'apple' in fruits",
+					  "fruits.has('apple')",
+					  "fruits.exist('apple')",
+					  "fruits.check('apple')"
+					],
+					"correct": 0
+				  },
+				  {
+					"question": "Hur får man det sista elementet i en lista?",
+					"options": [
+					  "list[len(list)]",
+					  "list[-1]",
+					  "list[last]",
+					  "list.end()"
+					],
+					"correct": 1
+				  },
+				  {
+					"question": "Vilken funktion används för att sortera en lista i stigande ordning?",
+					"options": [
+					  "sort()",
+					  "order()",
+					  "arrange()",
+					  "sorted()"
+					],
+					"correct": 0
+				  },
+				  {
+					"question": "Hur kan man kopiera en lista?",
+					"options": [
+					  "copyList = list.copy()",
+					  "copyList = list",
+					  "copyList = clone(list)",
+					  "copyList = list.duplicate()"
+					],
+					"correct": 0
+				  },
+				  {
+					"question": "Hur tar man bort alla element från en lista?",
+					"options": [
+					  "list.clear()",
+					  "list.removeAll()",
+					  "list.deleteAll()",
+					  "list.purge()"
+					],
+					"correct": 0
+				  },
+				  {
+					"question": "Vilket index har det första elementet i en lista?",
+					"options": [
+					  "0",
+					  "1",
+					  "-1",
+					  "2"
+					],
+					"correct": 0
+				  },        
+            ]
+        };
+		const AF1766_10 = {
+            name: "AF1766 kap 10 Tuple",
+            questions: [
+{
+    "question": "Vad är en tuple i Python?",
+    "options": ["En förändringsbar lista", "En oföränderlig sekvens", "En typ av dictionary", "En funktion"],
+    "correct": 1
+  },
+  {
+    "question": "Hur skapar du en tuple med endast ett element?",
+    "options": ["(5)", "(5,)", "[5]", "{5}"],
+    "correct": 1
+  },
+  {
+    "question": "Vilken metod används för att räkna förekomster av ett element i en tuple?",
+    "options": ["count()", "index()", "find()", "exists()"],
+    "correct": 0
+  },
+  {
+    "question": "Vad händer om du försöker ändra en tuple efter att den skapats?",
+    "options": ["Den ändrar värdet", "Den ger ett felmeddelande", "Den skapar en ny tuple", "Den ignoreras"],
+    "correct": 1
+  },
+  {
+    "question": "Hur kan du sammanfoga två tuples i Python?",
+    "options": ["Med + operatorn", "Med append()", "Med extend()", "Med join()"],
+    "correct": 0
+  },
+  {
+    "question": "Vad innebär tuple unpacking?",
+    "options": ["Att dela upp en tuple i variabler", "Att konvertera en tuple till en lista", "Att slå samman två tuples", "Att sortera element i en tuple"],
+    "correct": 0
+  },
+  {
+    "question": "Vilken av följande skapar en tom tuple?",
+    "options": ["()", "[]", "{}", "tuple[]"],
+    "correct": 0
+  },
+  {
+    "question": "Vilket påstående om tuples är falskt?",
+    "options": ["Tuples är oföränderliga", "Tuples kan lagra element av olika typer", "Tuples stöder att ändra enskilda element", "Tuples kan indexeras"],
+    "correct": 2
+  },
+  {
+    "question": "Vad blir resultatet av len((1, (2, 3), 4))?",
+    "options": ["3", "4", "2", "5"],
+    "correct": 0
+  },
+  {
+    "question": "Givet tuple t = (1, 2, 3), vad blir resultatet av t * 2?",
+    "options": ["(1, 2, 3, 1, 2, 3)", "(2, 4, 6)", "(1, 2, 3, 2, 4, 6)", "Felmeddelande"],
+    "correct": 0
+  },
+  {
+    "question": "Vad är tidskomplexiteten för att hämta ett element i en tuple?",
+    "options": ["O(1)", "O(n)", "O(log n)", "O(n^2)"],
+    "correct": 0
+  },
+  {
+    "question": "Hur kan du konvertera en tuple till en lista?",
+    "options": ["list(tuple_namn)", "tuple.to_list()", "convert(tuple_namn)", "tuple(list_namn)"],
+    "correct": 0
+  },
+  {
+    "question": "Vad blir resultatet av (1, 2) + (3, 4)?",
+    "options": ["(1, 2, 3, 4)", "(4, 6)", "[1, 2, 3, 4]", "Felmeddelande"],
+    "correct": 0
+  },
+  {
+    "question": "Vilket av följande är ett giltigt sätt att kontrollera om ett element finns i en tuple t?",
+    "options": ["if x in t", "t.has(x)", "exists(x, t)", "find(x, t)"],
+    "correct": 0
+  },
+  {
+    "question": "Vad blir resultatet av tuple(range(3))?",
+    "options": ["(1, 2, 3)", "(0, 1, 2)", "[0, 1, 2]", "Felmeddelande"],
+    "correct": 1
+  },
+  {
+    "question": "Hur kan du skapa en tuple dynamiskt från en lista?",
+    "options": ["tuple(min_lista)", "min_lista.to_tuple()", "convert_to_tuple(min_lista)", "tupleize(min_lista)"],
+    "correct": 0
+  },
+  {
+    "question": "Vad blir resultatet av (3,) * 3?",
+    "options": ["(3, 3, 3)", "(3, 9)", "(3, 3, 3, 3)", "Felmeddelande"],
+    "correct": 0
+  },
+  {
+    "question": "Vilken inbyggd funktion används för att hitta indexet för ett element i en tuple?",
+    "options": ["index()", "find()", "position()", "search()"],
+    "correct": 0
+  },
+  {
+    "question": "Vad blir resultatet av tuple('abc')?",
+    "options": ["('a', 'b', 'c')", "['a', 'b', 'c']", "'abc'", "Felmeddelande"],
+    "correct": 0
+  },
+  {
+    "question": "Vad blir resultatet av max((3, 1, 4, 1, 5, 9))?",
+    "options": ["9", "5", "Felmeddelande", "1"],
+    "correct": 0
+  },
+  {
+    "question": "Hur kan du få det sista elementet i en tuple t?",
+    "options": ["t[-1]", "t[len(t)]", "t.last()", "t.get_last()"],
+    "correct": 0
+  },
+  {
+    "question": "Vad är felet i följande kod?\n\n t = (1, 2, 3)\n t[0] = 5",
+    "options": ["Tuples är oföränderliga, du kan inte ändra element", "Indexeringen är felaktig", "Syntaxfel", "Inget fel"],
+    "correct": 0
+  },
+  {
+    "question": "Vad är felet i följande kod?\n\n t = tuple(5)",
+    "options": ["tuple() kan bara ta en iterable", "Tuple skapas felaktigt", "Saknar ett komma", "Inget fel"],
+    "correct": 0
+  },
+  {
+    "question": "Vad är felet i följande kod?\n\n t = (1, 2, 3)\n print(t.index(4))",
+    "options": ["Elementet 4 finns inte i tuplen", "Felaktig indexering", "index() fungerar bara på listor", "Inget fel"],
+    "correct": 0
+  },
+  {
+    "question": "Vad är felet i följande kod?\n\n t = (1, 2, 3)\n t.append(4)",
+    "options": ["Tuples har ingen append()-metod", "append() används felaktigt", "Saknar en variabel", "Inget fel"],
+    "correct": 0
+  },
+  {
+    "question": "Vad är felet i följande kod?\n\n t = (1, 2, 3)\n t.remove(2)",
+    "options": ["Tuples har ingen remove()-metod", "Indexfelet är utanför gränserna", "Saknar en lista", "Inget fel"],
+    "correct": 0
+  },
+  {
+    "question": "Vad är felet i följande kod?\n\n t = (1, 2, 3)\n print(t[3])",
+    "options": ["IndexError: Tuplen har bara tre element", "Felaktig funktion används", "Fel på print-satsen", "Inget fel"],
+    "correct": 0
+  },
+  {
+    "question": "Vad är felet i följande kod?\n\n t = (1, 2, 3)\n t = t + 4",
+    "options": ["Du kan inte lägga till en int till en tuple direkt", "Felaktig operator", "Tuples kan inte kombineras", "Inget fel"],
+    "correct": 0
+  }        
+            ]
+        };
+		const AF1766_11 = {
+            name: "AF1766 kap 11 Sets",
+            questions: [
+ {
+        "question": "Vad kännetecknar en set i Python?",
+        "options": ["Oordnad, oföränderlig, tillåter dubbletter", "Oordnad, oföränderlig, inga dubbletter", "Ordnad, föränderlig, tillåter dubbletter", "Ordnad, oföränderlig, inga dubbletter"],
+        "correct": 1
+    },
+    {
+        "question": "Hur skapar man en set i Python?",
+        "options": ["set = []", "set = {}", "set = set()", "set = ()"],
+        "correct": 2
+    },
+    {
+        "question": "Hur kan man lägga till ett nytt element till en set?",
+        "options": ["append()", "insert()", "add()", "extend()"],
+        "correct": 2
+    },
+    {
+        "question": "Vilken metod kan användas för att slå ihop två set och behålla alla unika element?",
+        "options": ["update()", "union()", "merge()", "combine()"],
+        "correct": 1
+    },
+    {
+        "question": "Vilken metod kan användas för att ta bort ett specifikt element från en set utan att få ett fel om det inte finns?",
+        "options": ["remove()", "discard()", "pop()", "clear()"],
+        "correct": 1
+    },
+    {
+        "question": "Hur kan man kontrollera om ett element finns i en set?",
+        "options": ["'element' in set", "set.has('element')", "set.contains('element')", "set.check('element')"],
+        "correct": 0
+    },
+    {
+        "question": "Vilken metod används för att ta bort ett slumpmässigt element från en set?",
+        "options": ["remove()", "discard()", "pop()", "clear()"],
+        "correct": 2
+    },
+    {
+        "question": "Vad returnerar len(set)?",
+        "options": ["Summan av elementen", "Antalet element i set", "Det största elementet", "Det minsta elementet"],
+        "correct": 1
+    },
+    {
+        "question": "Vilken metod kan användas för att behålla endast de element som finns i båda seten?",
+        "options": ["difference()", "intersection()", "symmetric_difference()", "exclusive()"],
+        "correct": 1
+    },
+    {
+        "question": "Vad gör metoden symmetric_difference() på två set?",
+        "options": ["Behåller endast de gemensamma elementen", "Behåller alla element förutom de gemensamma", "Slår samman båda seten", "Tar bort alla dubbletter"],
+        "correct": 1
+    },
+    {
+        "question": "Vilken av dessa metoder ändrar den ursprungliga seten istället för att returnera en ny?",
+        "options": ["union()", "intersection()", "difference_update()", "symmetric_difference()"],
+        "correct": 2
+    },
+    {
+        "question": "Vilken metod används för att tömma en set?",
+        "options": ["clear()", "remove_all()", "empty()", "delete()"],
+        "correct": 0
+    },
+    {
+        "question": "Vad händer om du försöker lägga till en dubblett i en set?",
+        "options": ["Ett fel uppstår", "Dubbletten ignoreras", "Dubbletten läggs till", "Seten rensas"],
+        "correct": 1
+    }       
+            ]
+        };
+		const AF1766_12 = {
+            name: "AF1766 kap 12 Dictionary",
+            questions: [
+        
+            ]
+        };
+		const AF1766_13 = {
+            name: "AF1766 kap 13 if else",
+            questions: [
+        
+            ]
+        };
+		const AF1766_14 = {
+            name: "AF1766 kap 14 while loops",
+            questions: [
+        
+            ]
+        };
+		const AF1766_15 = {
+            name: "AF1766 kap 15 for loops",
+            questions: [
+        
+            ]
+        };
+		const AF1766_16 = {
+            name: "AF1766 kap 16 functions",
+            questions: [
+        
+            ]
+        };
+		const AF1766_17 = {
+            name: "AF1766 kap 17 modules",
+            questions: [
+        
+            ]
+        };
+		const AF1766_18 = {
+            name: "AF1766 kap 18 dates",
+            questions: [
+        
+            ]
+        };
+		const AF1766_19 = {
+            name: "AF1766 kap 19 arrays",
+            questions: [
+        
+            ]
+        };
+		const AF1766_19 = {
+            name: "AF1766 kap 20 Classes",
+            questions: [
+        
+            ]
+        };
         // Initialize with both quizzes
 
         // DOM Elements
@@ -1073,12 +1805,28 @@
                     quizzes = JSON.parse(savedQuizzes);
                     
                     // Check if our new quiz already exists in saved quizzes
+
+
                     const hasAF1766_3 = quizzes.some(quiz => quiz.name === AF1766_3.name);
                     const hasAF1766_4 = quizzes.some(quiz => quiz.name === AF1766_4.name);
                     const hasAF1766_5 = quizzes.some(quiz => quiz.name === AF1766_5.name);
                     const hasAF1766_6 = quizzes.some(quiz => quiz.name === AF1766_6.name);
                     const hasAF1766_7 = quizzes.some(quiz => quiz.name === AF1766_7.name);
                     
+					const hasAF1766_8 = quizzes.some(quiz => quiz.name === AF1766_8.name);
+					const hasAF1766_9 = quizzes.some(quiz => quiz.name === AF1766_9.name);
+					const hasAF1766_10 = quizzes.some(quiz => quiz.name === AF1766_10.name);
+					const hasAF1766_11= quizzes.some(quiz => quiz.name === AF1766_11.name);
+					const hasAF1766_12= quizzes.some(quiz => quiz.name === AF1766_12.name);
+					const hasAF1766_13= quizzes.some(quiz => quiz.name === AF1766_13.name);
+					const hasAF1766_14= quizzes.some(quiz => quiz.name === AF1766_14.name);
+					const hasAF1766_15= quizzes.some(quiz => quiz.name === AF1766_15.name);
+					const hasAF1766_16= quizzes.some(quiz => quiz.name === AF1766_16.name);
+					const hasAF1766_17= quizzes.some(quiz => quiz.name === AF1766_17.name);
+					const hasAF1766_18= quizzes.some(quiz => quiz.name === AF1766_18.name);
+					const hasAF1766_19= quizzes.some(quiz => quiz.name === AF1766_19.name);
+					const hasAF1766_20 = quizzes.some(quiz => quiz.name === AF1766_20.name);
+                   
                     // If not, add it
                     if (!hasAF1766_3) {
                         quizzes.push(AF1766_3);        
@@ -1095,15 +1843,54 @@
                      if (!hasAF1766_7) {
                         quizzes.push(AF1766_7);        
                     }
+                      if (!hasAF1766_8) {
+                        quizzes.push(AF1766_8);        
+                    }
+                      if (!hasAF1766_9) {
+                        quizzes.push(AF1766_9);        
+                    }
+                      if (!hasAF1766_10) {
+                        quizzes.push(AF1766_10);        
+                    }
+                      if (!hasAF1766_11) {
+                        quizzes.push(AF1766_11);        
+                    }
+                      if (!hasAF1766_12) {
+                        quizzes.push(AF1766_12);        
+                    }
+                      if (!hasAF1766_13) {
+                        quizzes.push(AF1766_13);        
+                    }
+                      if (!hasAF1766_14) {
+                        quizzes.push(AF1766_14);        
+                    }
+                      if (!hasAF1766_15) {
+                        quizzes.push(AF1766_15);        
+                    }
+                      if (!hasAF1766_16) {
+                        quizzes.push(AF1766_16);        
+                    }
+                      if (!hasAF1766_17) {
+                        quizzes.push(AF1766_17);        
+                    }
+                      if (!hasAF1766_18) {
+                        quizzes.push(AF1766_18;        
+                    }
+                      if (!hasAF1766_19) {
+                        quizzes.push(AF1766_19;        
+                    }
+                      if (!hasAF1766_20) {
+                        quizzes.push(AF1766_20);        
+                    }
                     
                 } catch (e) {
                     console.error('Error loading saved quizzes', e);
                     // If there's an error, start fresh with the sample quiz and our new quiz
-                    quizzes = [AF1729, AF1766_3,AF1766_4,AF1766_5,AF1766_6,AF1766_7];
+                    quizzes = [AF1729, AF1766_3,AF1766_4,AF1766_5,AF1766_6,AF1766_7,AF1766_8,AF1766_9,AF1766_10,AF1766_11,AF1766_12,AF1766_13,AF1766_14,AF1766_15,AF1766_16,AF1766_17,AF1766_18,AF1766_19,AF1766_20];
                 }
             } else {
                 // No saved quizzes, initialize with both quizzes
-                quizzes = [AF1729, AF1766_3,AF1766_4,AF1766_5,AF1766_6,AF1766_7];
+                quizzes = [AF1729, AF1766_3,AF1766_4,AF1766_5,AF1766_6,AF1766_7,AF1766_8,AF1766_9,AF1766_10,AF1766_11,AF1766_12,AF1766_13,AF1766_14,AF1766_15,AF1766_16,AF1766_17,AF1766_18,AF1766_19,AF1766_20];
             }
             
             // Save the quizzes to persist the new quiz
