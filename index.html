@@ -1347,7 +1347,7 @@
 		const AF1766_9 = {
             name: "AF1766 kap 9 List",
             questions: [
-				 {
+				{
 					"question": "Hur skapar man en lista i Python?",
 					"options": [
 					  "list = {}",
@@ -1704,60 +1704,7 @@
     }       
             ]
         };
-		const AF1766_12 = {
-            name: "AF1766 kap 12 Dictionary",
-            questions: [
-        
-            ]
-        };
-		const AF1766_13 = {
-            name: "AF1766 kap 13 if else",
-            questions: [
-        
-            ]
-        };
-		const AF1766_14 = {
-            name: "AF1766 kap 14 while loops",
-            questions: [
-        
-            ]
-        };
-		const AF1766_15 = {
-            name: "AF1766 kap 15 for loops",
-            questions: [
-        
-            ]
-        };
-		const AF1766_16 = {
-            name: "AF1766 kap 16 functions",
-            questions: [
-        
-            ]
-        };
-		const AF1766_17 = {
-            name: "AF1766 kap 17 modules",
-            questions: [
-        
-            ]
-        };
-		const AF1766_18 = {
-            name: "AF1766 kap 18 dates",
-            questions: [
-        
-            ]
-        };
-		const AF1766_19 = {
-            name: "AF1766 kap 19 arrays",
-            questions: [
-        
-            ]
-        };
-		const AF1766_19 = {
-            name: "AF1766 kap 20 Classes",
-            questions: [
-        
-            ]
-        };
+
         // Initialize with both quizzes
 
         // DOM Elements
@@ -1817,15 +1764,7 @@
 					const hasAF1766_9 = quizzes.some(quiz => quiz.name === AF1766_9.name);
 					const hasAF1766_10 = quizzes.some(quiz => quiz.name === AF1766_10.name);
 					const hasAF1766_11= quizzes.some(quiz => quiz.name === AF1766_11.name);
-					const hasAF1766_12= quizzes.some(quiz => quiz.name === AF1766_12.name);
-					const hasAF1766_13= quizzes.some(quiz => quiz.name === AF1766_13.name);
-					const hasAF1766_14= quizzes.some(quiz => quiz.name === AF1766_14.name);
-					const hasAF1766_15= quizzes.some(quiz => quiz.name === AF1766_15.name);
-					const hasAF1766_16= quizzes.some(quiz => quiz.name === AF1766_16.name);
-					const hasAF1766_17= quizzes.some(quiz => quiz.name === AF1766_17.name);
-					const hasAF1766_18= quizzes.some(quiz => quiz.name === AF1766_18.name);
-					const hasAF1766_19= quizzes.some(quiz => quiz.name === AF1766_19.name);
-					const hasAF1766_20 = quizzes.some(quiz => quiz.name === AF1766_20.name);
+
                    
                     // If not, add it
                     if (!hasAF1766_3) {
@@ -1855,42 +1794,16 @@
                       if (!hasAF1766_11) {
                         quizzes.push(AF1766_11);        
                     }
-                      if (!hasAF1766_12) {
-                        quizzes.push(AF1766_12);        
-                    }
-                      if (!hasAF1766_13) {
-                        quizzes.push(AF1766_13);        
-                    }
-                      if (!hasAF1766_14) {
-                        quizzes.push(AF1766_14);        
-                    }
-                      if (!hasAF1766_15) {
-                        quizzes.push(AF1766_15);        
-                    }
-                      if (!hasAF1766_16) {
-                        quizzes.push(AF1766_16);        
-                    }
-                      if (!hasAF1766_17) {
-                        quizzes.push(AF1766_17);        
-                    }
-                      if (!hasAF1766_18) {
-                        quizzes.push(AF1766_18;        
-                    }
-                      if (!hasAF1766_19) {
-                        quizzes.push(AF1766_19;        
-                    }
-                      if (!hasAF1766_20) {
-                        quizzes.push(AF1766_20);        
-                    }
+
                     
                 } catch (e) {
                     console.error('Error loading saved quizzes', e);
                     // If there's an error, start fresh with the sample quiz and our new quiz
-                    quizzes = [AF1729, AF1766_3,AF1766_4,AF1766_5,AF1766_6,AF1766_7,AF1766_8,AF1766_9,AF1766_10,AF1766_11,AF1766_12,AF1766_13,AF1766_14,AF1766_15,AF1766_16,AF1766_17,AF1766_18,AF1766_19,AF1766_20];
+                    quizzes = [AF1729, AF1766_3,AF1766_4,AF1766_5,AF1766_6,AF1766_7,AF1766_8,AF1766_9,AF1766_10,AF1766_11];
                 }
             } else {
                 // No saved quizzes, initialize with both quizzes
-                quizzes = [AF1729, AF1766_3,AF1766_4,AF1766_5,AF1766_6,AF1766_7,AF1766_8,AF1766_9,AF1766_10,AF1766_11,AF1766_12,AF1766_13,AF1766_14,AF1766_15,AF1766_16,AF1766_17,AF1766_18,AF1766_19,AF1766_20];
+                quizzes = [AF1729, AF1766_3,AF1766_4,AF1766_5,AF1766_6,AF1766_7,AF1766_8,AF1766_9,AF1766_10,AF1766_11];
             }
             
             // Save the quizzes to persist the new quiz
